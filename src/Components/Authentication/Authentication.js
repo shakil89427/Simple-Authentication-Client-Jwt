@@ -69,7 +69,10 @@ const Authentication = () => {
         .get("http://localhost:5000/verification", {
           headers: { authorization: "Bearer " + "" + accesstoken },
         })
-        .then((res) => alert("Verified"));
+        .then((res) => {
+          setloading(false);
+          alert("Verified");
+        });
     } catch (error) {
       alert(error.message);
       setloading(false);
