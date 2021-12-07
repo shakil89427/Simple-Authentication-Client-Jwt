@@ -18,6 +18,12 @@ const SignupLogin = () => {
 
   const userSignup = (e) => {
     e.preventDefault();
+    if (
+      signupData.password.length < 6 &&
+      signupData.password !== signupData.password2
+    ) {
+      return alert("Password must be minimum 6 digits long and matched");
+    }
     signup(signupData);
     e.target.reset();
   };
