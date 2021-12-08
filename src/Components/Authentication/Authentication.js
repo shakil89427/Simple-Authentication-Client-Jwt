@@ -33,48 +33,45 @@ const Authentication = () => {
   const signup = (data) => {
     setloading(true);
     try {
-      axios.post("http://localhost:5000/signup", data).then((res) => {
-        localStorage.setItem("accessToken", res.data);
-        decodeUser(res.data);
-      });
+      axios
+        .post("https://shakil-authentication-server.herokuapp.com/signup", data)
+        .then((res) => {
+          localStorage.setItem("accessToken", res.data);
+          decodeUser(res.data);
+        });
     } catch (error) {
-      alert(error.message);
       setloading(false);
     }
+  };
+
+  /* Reset Password */
+  const resetpass = (data) => {
+    setloading(true);
+    try {
+      axios
+        .post(
+          "https://shakil-authentication-server.herokuapp.com/resetpassword",
+          data
+        )
+        .then((res) => {
+          setloading(false);
+        });
+    } catch (error) {}
   };
 
   /* Login Method */
   const login = (data) => {
     setloading(true);
     try {
-      axios.post("http://localhost:5000/login", data).then((res) => {
-        if (!res.data.message) {
-          localStorage.setItem("accessToken", res.data);
-          decodeUser(res.data);
-        } else {
-          alert(res.data.message);
-        }
-      });
-    } catch (error) {
-      alert(error.message);
-      setloading(false);
-    }
-  };
-
-  /* Check Verification */
-  const verification = () => {
-    setloading(true);
-    try {
       axios
-        .get("http://localhost:5000/verification", {
-          headers: { authorization: "Bearer " + "" + accesstoken },
-        })
+        .post("https://shakil-authentication-server.herokuapp.com/login", data)
         .then((res) => {
-          setloading(false);
-          alert("Verified");
+          if (!res.data.message) {
+            localStorage.setItem("accessToken", res.data);
+            decodeUser(res.data);
+          }
         });
     } catch (error) {
-      alert(error.message);
       setloading(false);
     }
   };
@@ -85,7 +82,7 @@ const Authentication = () => {
     localStorage.removeItem("accessToken");
   };
 
-  return { user, loading, signup, login, logout, verification };
+  return { user, loading, signup, login, logout, resetpass };
 };
 
 export default Authentication;
