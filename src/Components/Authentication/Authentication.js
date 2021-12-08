@@ -33,64 +33,59 @@ const Authentication = () => {
   /* Signup Method */
   const signup = (data) => {
     setloading(true);
-    try {
-      axios
-        .post("https://shakil-authentication-server.herokuapp.com/signup", data)
-        .then((res) => {
-          if (res.data) {
-            localStorage.setItem("accessToken", res.data);
-            decodeUser(res.data);
-          } else {
-            setmsg("Email Already Exist");
-            setloading(false);
-          }
-        });
-    } catch (error) {
-      setloading(false);
-    }
+    axios
+      .post("https://shakil-authentication-server.herokuapp.com/signup", data)
+      .then((res) => {
+        if (res.data) {
+          localStorage.setItem("accessToken", res.data);
+          decodeUser(res.data);
+          console.log(res);
+        }
+      })
+      .catch((error) => {
+        setmsg("Email Already Exist");
+        setloading(false);
+      });
   };
 
   /* Reset Password */
   const resetpass = (data) => {
     setloading(true);
-    try {
-      axios
-        .post(
-          "https://shakil-authentication-server.herokuapp.com/resetpassword",
-          data
-        )
-        .then((res) => {
-          if (res.data) {
-            setmsg("Please Check your Inbox");
-            setloading(false);
-          } else {
-            setmsg("Sorry User not found");
-            setloading(false);
-          }
-        });
-    } catch (error) {
-      setloading(false);
-    }
+    axios
+      .post(
+        "https://shakil-authentication-server.herokuapp.com/resetpassword",
+        data
+      )
+      .then((res) => {
+        if (res.data) {
+          setmsg("Please Check your Inbox");
+          setloading(false);
+        } else {
+          setmsg("Sorry User not found");
+          setloading(false);
+        }
+      })
+      .catch((error) => {
+        setmsg("Sorry User not found");
+        setloading(false);
+      });
   };
 
   /* Login Method */
   const login = (data) => {
     setloading(true);
-    try {
-      axios
-        .post("https://shakil-authentication-server.herokuapp.com/login", data)
-        .then((res) => {
-          if (res.data) {
-            localStorage.setItem("accessToken", res.data);
-            decodeUser(res.data);
-          } else {
-            setmsg("Sorry User not found");
-            setloading(false);
-          }
-        });
-    } catch (error) {
-      setloading(false);
-    }
+    axios
+      .post("https://shakil-authentication-server.herokuapp.com/login", data)
+      .then((res) => {
+        if (res.data) {
+          localStorage.setItem("accessToken", res.data);
+          decodeUser(res.data);
+        }
+      })
+      .catch((error) => {
+        setmsg("Authentication Error");
+        setloading(false);
+      });
   };
 
   /* Logout Method */
@@ -99,7 +94,7 @@ const Authentication = () => {
     localStorage.removeItem("accessToken");
   };
 
-  return { user, loading, signup, login, logout, resetpass, msg };
+  return { user, loading, signup, login, logout, resetpass, msg, setmsg };
 };
 
 export default Authentication;

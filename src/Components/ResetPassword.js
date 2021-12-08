@@ -7,6 +7,7 @@ const ResetPassword = () => {
   const [tokenExpired, setTokenExpired] = useState(false);
   const [active, setActive] = useState(false);
   const [userData, setUserData] = useState({});
+  const [disable, setDisable] = useState(false);
   const token = window.location.href.split("resetpassword/")[1];
 
   useEffect(() => {
@@ -52,6 +53,7 @@ const ResetPassword = () => {
       .then((res) => {
         if (res.data) {
           alert("Password Changed Successfully");
+          setDisable(true);
           setActive(true);
           setWait(false);
         }
@@ -72,6 +74,7 @@ const ResetPassword = () => {
         <form className="shadow p-3 rounded m-3" onSubmit={resetpassconfirm}>
           <h5>Enter New Password</h5>
           <input
+            disabled={disable}
             required
             name="password"
             onChange={getData}
@@ -81,6 +84,7 @@ const ResetPassword = () => {
           />
           <br />
           <input
+            disabled={disable}
             required
             name="password2"
             onChange={getData}
@@ -90,6 +94,7 @@ const ResetPassword = () => {
           />
           <br />
           <button
+            disabled={disable}
             className="w-50 border-0 bg-dark text-white my-2 px-2 py-1 rounded"
             type="submit"
           >

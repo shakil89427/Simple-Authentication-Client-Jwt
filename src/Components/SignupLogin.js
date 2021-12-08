@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAuth from "./Authentication/useAuth";
 import "../App.css";
 import { Navigate } from "react-router";
 
 const SignupLogin = () => {
-  const { signup, login, user, resetpass, loading } = useAuth();
+  const { msg, setmsg, signup, login, user, resetpass, loading } = useAuth();
   const [signupData, setSignupData] = useState({});
   const [resetemail, setResetEmail] = useState({});
   const [loginData, setLoginData] = useState({});
+
+  useEffect(() => {
+    if (msg) {
+      alert(msg);
+      setmsg(false);
+    }
+  }, [msg]);
 
   /* Signup */
   const getSignUpData = (e) => {
