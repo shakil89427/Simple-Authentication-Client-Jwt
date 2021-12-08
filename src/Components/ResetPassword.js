@@ -4,12 +4,16 @@ import { isExpired } from "react-jwt";
 
 const ResetPassword = () => {
   const [wait, setWait] = useState(true);
+  const [tokenExpired, setTokenExpired] = useState(false);
+  const [active, setActive] = useState(false);
   const [userData, setUserData] = useState({});
   const token = window.location.href.split("resetpassword/")[1];
 
   useEffect(() => {
     const expired = isExpired(token);
     if (expired) {
+      setTokenExpired(true);
+      setWait(false);
       return;
     }
     axios
@@ -18,8 +22,9 @@ const ResetPassword = () => {
         { token: token }
       )
       .then((res) => {
-        if (res.data === "ok") {
+        if (res.data) {
           setWait(false);
+          setActive(true);
         }
       });
   }, [token]);
@@ -37,21 +42,33 @@ const ResetPassword = () => {
     if (userData.password !== userData.password2) {
       return alert("Please check your password");
     }
+    setActive(false);
+    setWait(true);
     axios
       .post("https://shakil-authentication-server.herokuapp.com/confirmreset", {
         token: token,
         userData: userData,
       })
-      .then((res) => console.log(res));
+      .then((res) => {
+        if (res.data) {
+          alert("Password Changed Successfully");
+          setActive(true);
+          setWait(false);
+        }
+      });
   };
 
   return (
     <div className="user bg-info d-flex align-items-center justify-content-center text-center">
-      {wait ? (
+      {wait && (
         <div className="spinner-border" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
-      ) : (
+      )}
+
+      {tokenExpired && <h5>Sorry Link Expired</h5>}
+
+      {active && (
         <form className="shadow p-3 rounded m-3" onSubmit={resetpassconfirm}>
           <h5>Enter New Password</h5>
           <input

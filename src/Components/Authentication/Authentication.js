@@ -5,6 +5,7 @@ import { isExpired, decodeToken } from "react-jwt";
 const Authentication = () => {
   const [user, setUser] = useState({});
   const [loading, setloading] = useState(true);
+  const [msg, setmsg] = useState(false);
   const accesstoken = localStorage.getItem("accessToken");
 
   /* Decode User Token */
@@ -36,8 +37,13 @@ const Authentication = () => {
       axios
         .post("https://shakil-authentication-server.herokuapp.com/signup", data)
         .then((res) => {
-          localStorage.setItem("accessToken", res.data);
-          decodeUser(res.data);
+          if (res.data) {
+            localStorage.setItem("accessToken", res.data);
+            decodeUser(res.data);
+          } else {
+            setmsg("Email Already Exist");
+            setloading(false);
+          }
         });
     } catch (error) {
       setloading(false);
@@ -54,9 +60,17 @@ const Authentication = () => {
           data
         )
         .then((res) => {
-          setloading(false);
+          if (res.data) {
+            setmsg("Please Check your Inbox");
+            setloading(false);
+          } else {
+            setmsg("Sorry User not found");
+            setloading(false);
+          }
         });
-    } catch (error) {}
+    } catch (error) {
+      setloading(false);
+    }
   };
 
   /* Login Method */
@@ -66,9 +80,12 @@ const Authentication = () => {
       axios
         .post("https://shakil-authentication-server.herokuapp.com/login", data)
         .then((res) => {
-          if (!res.data.message) {
+          if (res.data) {
             localStorage.setItem("accessToken", res.data);
             decodeUser(res.data);
+          } else {
+            setmsg("Sorry User not found");
+            setloading(false);
           }
         });
     } catch (error) {
@@ -82,7 +99,7 @@ const Authentication = () => {
     localStorage.removeItem("accessToken");
   };
 
-  return { user, loading, signup, login, logout, resetpass };
+  return { user, loading, signup, login, logout, resetpass, msg };
 };
 
 export default Authentication;
