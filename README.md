@@ -1,3 +1,3 @@
 ## This project Created By Shakil Ahmed
 
-## Simple Authentication with database
+## Simple Authentication FrontEnd with React, Axios, JWT
