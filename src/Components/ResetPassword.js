@@ -40,8 +40,11 @@ const ResetPassword = () => {
 
   const resetpassconfirm = (e) => {
     e.preventDefault();
+    if (userData.password.length < 6) {
+      return alert("Password must be minimum 6 digits long");
+    }
     if (userData.password !== userData.password2) {
-      return alert("Please check your password");
+      return alert("Password didn't matched");
     }
     setActive(false);
     setWait(true);

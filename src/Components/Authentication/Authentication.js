@@ -39,7 +39,6 @@ const Authentication = () => {
         if (res.data) {
           localStorage.setItem("accessToken", res.data);
           decodeUser(res.data);
-          console.log(res);
         }
       })
       .catch((error) => {
@@ -52,7 +51,10 @@ const Authentication = () => {
   const resetpass = (data) => {
     setloading(true);
     axios
-      .post("http://localhost:5000/resetpassword", data)
+      .post(
+        "https://shakil-authentication-server.herokuapp.com/resetpassword",
+        data
+      )
       .then((res) => {
         if (res.data) {
           setmsg("Please Check your Inbox");
