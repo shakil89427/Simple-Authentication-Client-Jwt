@@ -52,10 +52,7 @@ const Authentication = () => {
   const resetpass = (data) => {
     setloading(true);
     axios
-      .post(
-        "https://shakil-authentication-server.herokuapp.com/resetpassword",
-        data
-      )
+      .post("http://localhost:5000/resetpassword", data)
       .then((res) => {
         if (res.data) {
           setmsg("Please Check your Inbox");
